@@ -1,0 +1,375 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>SkillBridge — Connect. Learn. Grow.</title>
+    <link rel="stylesheet" href="style.css">
+    <style>
+        canvas#particles {
+            position: fixed;
+            inset: 0;
+            z-index: 0;
+            pointer-events: none;
+        }
+
+        /* ── Hero Layout ── */
+        .hero {
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            text-align: center;
+            padding: 40px 20px;
+            position: relative;
+            z-index: 1;
+        }
+
+        /* ── Badge ── */
+        .hero-badge {
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            background: rgba(56, 189, 248, 0.08);
+            border: 1px solid rgba(56, 189, 248, 0.2);
+            color: #7dd3fc;
+            font-size: 12px;
+            font-weight: 700;
+            padding: 7px 18px;
+            border-radius: 99px;
+            letter-spacing: 0.8px;
+            text-transform: uppercase;
+            margin-bottom: 28px;
+            animation: fadeInUp 0.5s ease forwards;
+        }
+
+        .badge-dot {
+            width: 6px;
+            height: 6px;
+            background: #22d3ee;
+            border-radius: 50%;
+            box-shadow: 0 0 8px #22d3ee;
+            animation: statusBlink 2s ease-in-out infinite;
+        }
+
+        @keyframes statusBlink {
+
+            0%,
+            100% {
+                opacity: 1
+            }
+
+            50% {
+                opacity: 0.3
+            }
+        }
+
+        /* ── Main Heading ── */
+        .hero h1 {
+            font-size: clamp(2.8rem, 6vw, 5rem);
+            font-weight: 900;
+            letter-spacing: -2px;
+            line-height: 1.05;
+            margin-bottom: 20px;
+            animation: fadeInUp 0.6s 0.1s ease both;
+        }
+
+        .hero h1 span {
+            background: linear-gradient(135deg, #38bdf8 0%, #818cf8 50%, #a855f7 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+
+        /* ── Sub Heading ── */
+        .hero-sub {
+            font-size: 1.15rem;
+            color: #475569;
+            max-width: 520px;
+            line-height: 1.75;
+            margin-bottom: 48px;
+            animation: fadeInUp 0.6s 0.2s ease both;
+        }
+
+        /* ── CTA Cards ── */
+        .cta-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 20px;
+            max-width: 560px;
+            width: 100%;
+            animation: fadeInUp 0.6s 0.3s ease both;
+        }
+
+        @media (max-width: 480px) {
+            .cta-grid {
+                grid-template-columns: 1fr;
+            }
+        }
+
+        .cta-card {
+            background: rgba(10, 15, 30, 0.65);
+            backdrop-filter: blur(20px) saturate(150%);
+            -webkit-backdrop-filter: blur(20px) saturate(150%);
+            border-radius: 22px;
+            padding: 28px 24px;
+            border: 1px solid rgba(148, 163, 184, 0.1);
+            text-decoration: none;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 12px;
+            transition: all 0.35s cubic-bezier(0.4, 0, 0.2, 1);
+            position: relative;
+            overflow: hidden;
+        }
+
+        .cta-card::before {
+            content: '';
+            position: absolute;
+            inset: 0;
+            border-radius: 22px;
+            opacity: 0;
+            transition: opacity 0.35s ease;
+        }
+
+        .cta-card:hover {
+            transform: translateY(-6px);
+            text-decoration: none;
+        }
+
+        /* Student card — sky blue */
+        .cta-student {
+            border-color: rgba(56, 189, 248, 0.15);
+        }
+
+        .cta-student::before {
+            background: radial-gradient(circle at 50% 0%, rgba(56, 189, 248, 0.08), transparent 70%);
+        }
+
+        .cta-student:hover {
+            border-color: rgba(56, 189, 248, 0.35);
+            box-shadow:
+                0 24px 50px rgba(56, 189, 248, 0.18),
+                0 0 0 1px rgba(56, 189, 248, 0.12);
+        }
+
+        .cta-student:hover::before {
+            opacity: 1;
+        }
+
+        /* Company card — indigo */
+        .cta-company {
+            border-color: rgba(99, 102, 241, 0.15);
+        }
+
+        .cta-company::before {
+            background: radial-gradient(circle at 50% 0%, rgba(99, 102, 241, 0.08), transparent 70%);
+        }
+
+        .cta-company:hover {
+            border-color: rgba(99, 102, 241, 0.35);
+            box-shadow:
+                0 24px 50px rgba(99, 102, 241, 0.18),
+                0 0 0 1px rgba(99, 102, 241, 0.12);
+        }
+
+        .cta-company:hover::before {
+            opacity: 1;
+        }
+
+        .cta-icon {
+            width: 56px;
+            height: 56px;
+            border-radius: 18px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 28px;
+            transition: transform 0.3s ease;
+        }
+
+        .cta-card:hover .cta-icon {
+            transform: scale(1.1) rotate(-4deg);
+        }
+
+        .icon-student {
+            background: linear-gradient(135deg, rgba(56, 189, 248, 0.2), rgba(99, 102, 241, 0.2));
+            border: 1px solid rgba(56, 189, 248, 0.3);
+            box-shadow: 0 8px 24px rgba(56, 189, 248, 0.2);
+        }
+
+        .icon-company {
+            background: linear-gradient(135deg, rgba(99, 102, 241, 0.2), rgba(168, 85, 247, 0.2));
+            border: 1px solid rgba(99, 102, 241, 0.3);
+            box-shadow: 0 8px 24px rgba(99, 102, 241, 0.2);
+        }
+
+        .cta-title {
+            font-size: 1.1rem;
+            font-weight: 800;
+            color: #f1f5f9;
+            letter-spacing: -0.3px;
+        }
+
+        .cta-desc {
+            font-size: 12.5px;
+            color: #475569;
+            margin: 0;
+            line-height: 1.5;
+        }
+
+        .cta-arrow {
+            font-size: 13px;
+            font-weight: 700;
+            padding: 7px 18px;
+            border-radius: 99px;
+            margin-top: 4px;
+        }
+
+        .arrow-student {
+            background: rgba(56, 189, 248, 0.12);
+            color: #38bdf8;
+            border: 1px solid rgba(56, 189, 248, 0.25);
+        }
+
+        .arrow-company {
+            background: rgba(99, 102, 241, 0.12);
+            color: #a5b4fc;
+            border: 1px solid rgba(99, 102, 241, 0.25);
+        }
+
+        /* ── Stats Row ── */
+        .stats-row {
+            display: flex;
+            gap: 32px;
+            margin-top: 52px;
+            animation: fadeInUp 0.6s 0.5s ease both;
+        }
+
+        .stat {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 4px;
+        }
+
+        .stat-num {
+            font-size: 1.6rem;
+            font-weight: 900;
+            background: linear-gradient(135deg, #38bdf8, #818cf8);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+
+        .stat-lbl {
+            font-size: 12px;
+            color: #334155;
+            font-weight: 600;
+            letter-spacing: 0.3px;
+        }
+
+        .stat-sep {
+            width: 1px;
+            height: 40px;
+            background: rgba(148, 163, 184, 0.1);
+            align-self: center;
+        }
+    </style>
+</head>
+
+<body>
+    <canvas id="particles"></canvas>
+
+    <div class="hero">
+        <!-- Live badge -->
+        <div class="hero-badge">
+            <span class="badge-dot"></span>
+            Now Live — Free to Use
+        </div>
+
+        <!-- Heading -->
+        <h1>Your Internship<br><span>Bridge to Success</span></h1>
+        <p class="hero-sub">SkillBridge connects ambitious students with forward-thinking companies. Find your dream
+            internship or discover the talent that drives your business.</p>
+
+        <!-- CTA Cards -->
+        <div class="cta-grid">
+            <a href="student-login.html" class="cta-card cta-student">
+                <div class="cta-icon icon-student">🎓</div>
+                <div class="cta-title">I'm a Student</div>
+                <p class="cta-desc">Browse internships, add skills & apply with one click</p>
+                <span class="cta-arrow arrow-student">Find Internships →</span>
+            </a>
+            <a href="company-login.html" class="cta-card cta-company">
+                <div class="cta-icon icon-company">🏢</div>
+                <div class="cta-title">I'm a Company</div>
+                <p class="cta-desc">Post internships & discover talented students</p>
+                <span class="cta-arrow arrow-company">Post Opportunities →</span>
+            </a>
+        </div>
+
+        <!-- Stats 
+        <div class="stats-row">
+            <div class="stat"><span class="stat-num">500+</span><span class="stat-lbl">Students</span></div>
+            <div class="stat-sep"></div>
+            <div class="stat"><span class="stat-num">120+</span><span class="stat-lbl">Companies</span></div>
+            <div class="stat-sep"></div>
+            <div class="stat"><span class="stat-num">350+</span><span class="stat-lbl">Internships</span></div>
+        </div>-->
+    </div>
+
+    <script>
+        (function () {
+            const canvas = document.getElementById('particles');
+            const ctx = canvas.getContext('2d');
+            let W, H, pts = [];
+
+            function resize() { W = canvas.width = window.innerWidth; H = canvas.height = window.innerHeight; }
+            window.addEventListener('resize', resize); resize();
+
+            /* Mix of blue & indigo particles for the landing page */
+            const colors = ['56,189,248', '99,102,241', '168,85,247'];
+            for (let i = 0; i < 70; i++) {
+                pts.push({
+                    x: Math.random() * W, y: Math.random() * H,
+                    r: Math.random() * 2 + 0.4,
+                    dx: (Math.random() - 0.5) * 0.4,
+                    dy: (Math.random() - 0.5) * 0.4,
+                    o: Math.random() * 0.45 + 0.08,
+                    c: colors[Math.floor(Math.random() * colors.length)]
+                });
+            }
+
+            function draw() {
+                ctx.clearRect(0, 0, W, H);
+                pts.forEach(p => {
+                    p.x += p.dx; p.y += p.dy;
+                    if (p.x < 0 || p.x > W) p.dx *= -1;
+                    if (p.y < 0 || p.y > H) p.dy *= -1;
+                    ctx.beginPath(); ctx.arc(p.x, p.y, p.r, 0, Math.PI * 2);
+                    ctx.fillStyle = `rgba(${p.c},${p.o})`; ctx.fill();
+                });
+                for (let i = 0; i < pts.length; i++) {
+                    for (let j = i + 1; j < pts.length; j++) {
+                        const d = Math.hypot(pts[i].x - pts[j].x, pts[i].y - pts[j].y);
+                        if (d < 130) {
+                            ctx.beginPath();
+                            ctx.strokeStyle = `rgba(${pts[i].c},${0.06 * (1 - d / 130)})`;
+                            ctx.lineWidth = 0.7;
+                            ctx.moveTo(pts[i].x, pts[i].y); ctx.lineTo(pts[j].x, pts[j].y);
+                            ctx.stroke();
+                        }
+                    }
+                }
+                requestAnimationFrame(draw);
+            }
+            draw();
+        })();
+    </script>
+</body>
+
+</html>
